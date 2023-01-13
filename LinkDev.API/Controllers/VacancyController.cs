@@ -32,6 +32,13 @@ namespace LinkDev.API.Controllers
             return CustomResult(result, HttpStatusCode.OK);
         }
 
+        [HttpGet("get-all-vacancies")]
+        public async Task<IActionResult> GetAllVacanciesAsync()
+        {
+            var result = await _iSender.Send(new GetAllVacancyForClientQuery());
+            return CustomResult(result, HttpStatusCode.OK);
+        }
+
         [HttpPost("Create")]
         public async Task<IActionResult> CreateAsync(VacancyDto model)
         {

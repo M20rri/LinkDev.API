@@ -55,6 +55,12 @@ namespace LinkDev.API.Interface.Implementation
             return vacancyPagination;
         }
 
+        public async Task<List<VacancyDto>> GetAll()
+        {
+            var items = await _ctx.Vacancies.ToListAsync();
+            return _mapper.Map<List<VacancyDto>>(items);
+        }
+
         public async Task<VacancyDto> GetById(int id)
         {
             var item = await _ctx.Vacancies.FindAsync(id) ??

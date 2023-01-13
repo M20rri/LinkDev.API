@@ -28,14 +28,15 @@ namespace LinkDev.API.Features.Applicant.Command
             var isDupplicateEmail = await _repo.ValidateDupplicateEmail(request.model.Email);
             if (isDupplicateEmail)
             {
-                throw new ValidationException("Email exist before", (int)HttpStatusCode.BadRequest);
+                var applicaint = await _repo.GetApplicanitByEmail(request.model.Email);
+                throw new ValidationException($"Email exist before , {applicaint.Id}", (int)HttpStatusCode.BadRequest);
             }
 
-            var isDupplicateMobile = await _repo.ValidateDupplicateMobile(request.model.Mobile);
-            if (isDupplicateMobile)
-            {
-                throw new ValidationException("Mobile exist before", (int)HttpStatusCode.BadRequest);
-            }
+            //var isDupplicateMobile = await _repo.ValidateDupplicateMobile(request.model.Mobile);
+            //if (isDupplicateMobile)
+            //{
+            //    throw new ValidationException("Mobile exist before", (int)HttpStatusCode.BadRequest);
+            //}
 
             return await _repo.Insert(request.model);
         }

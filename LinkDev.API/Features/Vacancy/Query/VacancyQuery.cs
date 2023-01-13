@@ -8,4 +8,5 @@ namespace LinkDev.API.Features.Vacancy.Query
     public record DeletVacancyQuery(int id) : IRequest<int>;
     public record GetSinglVacancyQuery(int id) : IRequest<VacancyDto>;
     public record GetAllVacancyQuery(QueryParameters QueryParameters) : IRequest<VacancyPagination>;
+    public record GetAllVacancyForClientQuery() : IRequest<List<VacancyDto>>;
 }

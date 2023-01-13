@@ -16,6 +16,25 @@ namespace LinkDev.API.Interface.Implementation
             _ctx = ctx;
         }
 
+        public async Task<bool> CheckMaxApplicants(int vacancyId)
+        {
+            var vacancy = await _ctx.Vacancies.FirstOrDefaultAsync(a => a.Id == vacancyId);
+            var applicantsHits = await _ctx.AppliedVacancies.CountAsync(a => a.VacancyId == vacancyId);
+            return vacancy?.MaxApplicants <= applicantsHits;
+        }
+
+        public async Task<List<ApplicantDto>> GetVacancyApplicants(int vacancyId)
+        {
+            return await _ctx.AppliedVacancies.Where(a => a.VacancyId == vacancyId)
+                    .Select(r => new ApplicantDto
+                    {
+                        Id = r.ApplicantId,
+                        Name = r.Applicant.Name,
+                        Email = r.Applicant.Email,
+                        Mobile = r.Applicant.Mobile
+                    }).ToListAsync();
+        }
+
         public async Task<int> Insert(AppliedVacancyDto model)
         {
             var item = _mapper.Map<AppliedVacancy>(model);

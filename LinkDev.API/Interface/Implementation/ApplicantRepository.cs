@@ -18,6 +18,14 @@ namespace LinkDev.API.Interface.Implementation
             _ctx = ctx;
         }
 
+        public async Task<ApplicantDto> GetApplicanitByEmail(string email)
+        {
+            var item = await _ctx.Applicants.FirstOrDefaultAsync(a => a.Email == email) ??
+                             throw new ValidationException("Applicant is not exist", (int)HttpStatusCode.BadRequest);
+
+            return _mapper.Map<ApplicantDto>(item);
+        }
+
         public async Task<ApplicantDto> GetById(int id)
         {
             var item = await _ctx.Applicants.FindAsync(id) ??

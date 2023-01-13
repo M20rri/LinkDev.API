@@ -25,11 +25,16 @@ namespace LinkDev.API.Features.ApplyVacancy.Command
                 throw new ValidationException(Errors, (int)HttpStatusCode.BadRequest);
             }
 
-
             var isDupplicateVacancy = await _repo.ValidateDupplicateApply(request.model);
             if (isDupplicateVacancy)
             {
                 throw new ValidationException("You apply this vacancy before", (int)HttpStatusCode.BadRequest);
+            }
+
+            var isAllowedBoundaryMaxApplicants = await _repo.CheckMaxApplicants(request.model.VacancyId);
+            if (isAllowedBoundaryMaxApplicants)
+            {
+                throw new ValidationException("No longer available", (int)HttpStatusCode.BadRequest);
             }
 
             return await _repo.Insert(request.model);

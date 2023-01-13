@@ -5,6 +5,7 @@ namespace LinkDev.API.Interface
     public interface IVacancy
     {
         Task<VacancyPagination> GetAll(QueryParameters queryParameters);
+        Task<List<VacancyDto>> GetAll();
         Task<VacancyDto> GetById(int id);
         Task<int> Insert(VacancyDto model);
         Task<int> Update(VacancyDto model);
